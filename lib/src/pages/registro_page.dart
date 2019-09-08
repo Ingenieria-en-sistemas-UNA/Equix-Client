@@ -4,8 +4,8 @@ import 'package:equix/src/providers/usuario_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:equix/src/utils/utils.dart' as utils;
-class RegistroPage extends StatelessWidget {
 
+class RegistroPage extends StatelessWidget {
   final usuarioProvider = new UsuarioProvider();
 
   @override
@@ -53,6 +53,8 @@ class RegistroPage extends StatelessWidget {
                 _crearEmail(bloc),
                 SizedBox(height: 30.0),
                 _crearPassword(bloc),
+                SizedBox(height: 30.0),
+                _crearName(bloc),
                 SizedBox(height: 30.0),
                 _crearBoton(bloc)
               ],
@@ -117,7 +119,7 @@ class RegistroPage extends StatelessWidget {
         return RaisedButton(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-            child: Text('Ingresar'),
+            child: Text('Registrarse'),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
@@ -132,14 +134,14 @@ class RegistroPage extends StatelessWidget {
   }
 
   _register(LoginBloc bloc, BuildContext context) async {
-    Map info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
-    if(info['okey']){
+    Map info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.password, bloc.name);
+    if (info['okey']) {
+      //bloc.changeAuthor(info['author']);
       Navigator.pushReplacementNamed(context, 'home');
     } else {
-      utils.mostrarAlerta( context, info['mensaje'] );
+      utils.mostrarAlerta(context, info['mensaje']);
     }
   }
-
 
   Widget _createBackground(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -184,6 +186,27 @@ class RegistroPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _crearName(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.nameStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              icon: Icon(Icons.account_circle, color: Colors.deepPurple),
+              labelText: 'Nombre',
+              counterText: snapshot.data,
+              errorText: snapshot.error,
+            ),
+            onChanged: bloc.changeName,
+          ),
+        );
+      },
     );
   }
 }

@@ -137,6 +137,7 @@ class LoginPage extends StatelessWidget {
     Map info = await usuarioProvider.login(bloc.email, bloc.password);
 
     if (info['okey']) {
+      // bloc.changeAuthor(info['author']);
       Navigator.pushReplacementNamed(context, 'home');
     } else {
       utils.mostrarAlerta(context, info['mensaje']);

@@ -1,4 +1,6 @@
 import 'package:equix/src/blocs/category/bloc/bloc.dart';
+import 'package:equix/src/blocs/login/login_bloc.dart';
+import 'package:equix/src/blocs/provider.dart';
 import 'package:equix/src/components/dropdown_category.dart';
 import 'package:equix/src/models/author_model.dart';
 import 'package:equix/src/models/phrase_model.dart';
@@ -23,10 +25,12 @@ class _PhrasePageState extends State<PhrasePage> {
 
   final _phraseProvider = new PhraseProvider();
 
+  LoginBloc blocUser;
   
   @override
   Widget build(BuildContext context) {
     categoryBloc = BlocProvider.of<CategoryBloc>(context);
+    blocUser = Provider.of(context);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -91,7 +95,7 @@ class _PhrasePageState extends State<PhrasePage> {
     if(categoryBloc.category == null) return;
     phrase.category = categoryBloc.category;
     phrase.createdAt = DateTime.now();
-    
+    phrase.author = blocUser.author;
     formKey.currentState.save();
 
     setState(() => _saving = true);
@@ -102,7 +106,7 @@ class _PhrasePageState extends State<PhrasePage> {
 
     showSnackbar(response);
 
-    await Future.delayed(Duration(seconds: 2), () {
+    await Future.delayed(Duration(seconds: 1), () {
       Navigator.pop(context);
     });
   }

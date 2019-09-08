@@ -1,3 +1,4 @@
+import 'package:equix/src/models/author_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*
@@ -35,6 +36,25 @@ class PreferenciasUsuario {
 
   set token( String value ) {
     _prefs.setString('token', value);
+  }
+
+  set author(Author author){
+    if(author != null){
+      _prefs.setInt('authorId', author.id);
+      _prefs.setString('authorName', author.name);
+    } else {
+      _prefs.remove('authorId');
+      _prefs.remove('authorName');
+    }
+  }
+
+  get author {
+    var id = _prefs.getInt('authorId');
+    var name = _prefs.getString('authorName');
+    if(id != null && name != null){
+      return new Author(id: id, name: name, phrases: []);
+    }
+    return null;
   }
   
 
