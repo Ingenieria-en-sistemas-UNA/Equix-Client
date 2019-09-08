@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   http:
   signalr_client:
+  flutter_bloc:
+  intl: ^0.15.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
