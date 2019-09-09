@@ -12,7 +12,14 @@ class CardPhraseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var date = new DateFormat("dd-MM-yyyy").format(_phrase.createdAt.toUtc());
     final blocUser = Provider.of(context);
-    var name = _phrase.author.name == blocUser.author.name ? 'Yo' : _phrase.author.name;
+    var name = _phrase.author.name == blocUser.author.name
+        ? 'Yo'
+        : _phrase.author.name;
+    Map<int, Color> colors = {
+      1 : Colors.blueAccent,
+      2 : Colors.purpleAccent,
+      3 : Colors.orangeAccent
+    };
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 10.0,
@@ -31,12 +38,19 @@ class CardPhraseWidget extends StatelessWidget {
                   Text(_phrase.description),
                   SizedBox(height: 5.0),
                   Divider(),
-                  Text('Categoria: ${_phrase.category.name}'),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Container(
+                      padding: EdgeInsets.all(7.0),
+                      decoration: BoxDecoration(color: colors[_phrase.category.id]),
+                      child: Text('${_phrase.category.name}', style: TextStyle(color: Colors.white),), 
+                    ),
+                    
+                  ),
+                  SizedBox(height: 5.0),
                   Text('Fecha: $date'),
-
                 ],
               ),
-
             ),
           ],
         ),

@@ -71,6 +71,7 @@ class PhraseProvider {
     final response = await _processResponse('$_baseUrl/api/phrases');
     if(response != null){
       _phrases = updatePhrases(response);
+      sortPhrases();
       phrasesSink(_phrases);
     }
     _loading = false;
@@ -104,10 +105,15 @@ class PhraseProvider {
     }
   }
 
+  void sortPhrases() {
+    _phrases.sort((a, b) => b.id.compareTo(a.id));
+  }
+
   void _onReceivePhrase(List phrases){
     Phrase phrase = Phrase.fromJson(phrases.first[0]);
     if(phrase == null) return;
     _phrases.add(phrase);
+    sortPhrases();
     phrasesSink( _phrases );
   }
 }
